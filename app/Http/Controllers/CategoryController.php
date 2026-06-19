@@ -1,11 +1,5 @@
 <?php
 namespace App\Http\Controllers;
-use App\Http\Requests\StoreCategoryRequest;
-use App\Http\Requests\UpdateCategoryRequest;
-use App\Services\CategoryService;
-use App\Http\Controllers\Api\BaseController;
-use Exception;
-
 use App\Services\CategoryService;
 use App\Http\Requests\StoreCategoryRequest;
 use App\Http\Requests\UpdateCategoryRequest;
