@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Services\ItemService;
 use App\Http\Requests\StoreItemRequest;
 use App\Http\Requests\UpdateItemRequest;
+use Illuminate\Http\Request;
+use App\Models\Item;
 use Exception;
 
 class ItemController extends Controller {
@@ -14,10 +16,18 @@ class ItemController extends Controller {
         $this->svc = $svc;
     }
 
-    public function index() {
+    public function index(Request $req) {
+        // Mengambil data item beserta relasi kategori menggunakan Query Builder
+        $items = Item::with('category');
+
+        // Jika terdapat query parameter 'category_id' di URL, lakukan filtering
+        if ($req->filled('category_id')) {
+            $items->where('category_id', $req->category_id);
+        }
+
         return response()->json([
             'status' => 'success',
-            'data'   => $this->svc->all(),
+            'data'   => $items->get(),
             'message'=> 'Berhasil menarik semua data Item'
         ]);
     }

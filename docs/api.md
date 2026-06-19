@@ -1,29 +1,52 @@
-# Inventory System API v1
-Base URL: `http://localhost:8000/api/v1`
-
-## Auth
-POST /register
-Body: { name, email, password, password_confirmation }
-Response: 201 Created {
-"status":"success",
-"data": { "user":..., "token":... },
-"message":"User registered"
-}
-POST /login
-Body: { email, password }
-...
-
-## Categories
-GET /categories
-
-POST /categories { name }
-GET /categories/{id}
-PUT /categories/{id} { name }
-DELETE /categories/{id} (admin only)
-
 ## Items
-GET /items
-POST /items { name, quantity, price, category_id }
-GET /items/{id}
-PUT /items/{id}
-DELETE /items/{id} (admin only)
+
+### GET /api/items
+Mengambil seluruh data item.
+
+**Headers:**
+- Authorization: Bearer {token}
+
+**Response:** 200 OK
+```json
+{
+    "status": "success",
+    "data": [...],
+    "message": "Berhasil menarik semua data Item"
+}
+```
+
+---
+
+### GET /api/items?category_id={id}
+Filter items berdasarkan kategori (optional).
+
+**Query Parameter:**
+| Parameter   | Type    | Required | Description                      |
+|-------------|---------|----------|-----------------------------------|
+| category_id | integer | optional | ID kategori untuk memfilter item |
+
+**Response sukses (ada item):** 200 OK
+```json
+{
+    "status": "success",
+    "data": [
+        {
+            "id": 5,
+            "name": "laptop",
+            "quantity": 2,
+            "price": "20000.00",
+            "category_id": 2
+        }
+    ],
+    "message": "Berhasil menarik semua data Item"
+}
+```
+
+**Response sukses (tidak ada item, array kosong):** 200 OK
+```json
+{
+    "status": "success",
+    "data": [],
+    "message": "Berhasil menarik semua data Item"
+}
+```
