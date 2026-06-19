@@ -17,6 +17,10 @@ class ItemController extends Controller {
     }
 
     public function index(Request $req) {
+    $req->validate([
+        'category_id' => 'nullable|integer|exists:categories,id',
+    ]);
+
     $items = Item::with('category');
 
     if ($req->filled('category_id')) {
