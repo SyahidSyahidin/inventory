@@ -17,20 +17,22 @@ class ItemController extends Controller {
     }
 
     public function index(Request $req) {
-        // Mengambil data item beserta relasi kategori menggunakan Query Builder
-        $items = Item::with('category');
+    $req->validate([
+        'category_id' => 'nullable|integer|exists:categories,id',
+    ]);
 
-        // Jika terdapat query parameter 'category_id' di URL, lakukan filtering
-        if ($req->filled('category_id')) {
-            $items->where('category_id', $req->category_id);
-        }
+    $items = Item::with('category');
 
-        return response()->json([
-            'status' => 'success',
-            'data'   => $items->get(),
-            'message'=> 'Berhasil menarik semua data Item'
-        ]);
+    if ($req->filled('category_id')) {
+        $items->where('category_id', $req->category_id);
     }
+
+    return response()->json([
+        'status' => 'success',
+        'data'   => $items->get(),
+        'message'=> 'Berhasil menarik semua data Item'
+    ]);
+}
 
     public function store(StoreItemRequest $req) {
         $item = $this->svc->create($req->validated());
